@@ -1,0 +1,175 @@
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Игра «Найди пару» </title>
+      <link rel="stylesheet" href="style.css">
+    <style>
+       
+    </style>
+</head>
+<body>
+  <div id="container" class="">
+
+  </div>
+<div><br>
+    <button id="butt">Старт</button><br><br>
+          Время: <span id="min">00</span>:<span id="seconds">00</span>.<span id="tens">00</span>
+          <br><br>
+
+</div>
+</div>
+  <div>
+
+      <br><br>
+  </div>
+  <script  > 
+  
+var myCards = document.getElementById('container');
+var resultsArray = [];
+var counter = 00;
+var seconds = 00;
+var tens = 00;
+var min =00;
+var tries = 00;
+var appendTens = document.getElementById("tens");
+var appendmin = document.getElementById("min");
+var appendSeconds = document.getElementById("seconds");
+var buttonPause = document.getElementById('butt');
+
+var Interval ;
+//мои картинки из папки
+var images = [
+    '1', '2', '3', '4', '5', '6', '7', '8'];
+	
+
+var clone = images.slice(0); 
+var cards = images.concat(clone); 
+
+		
+ function shuffle(o){
+  for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i],   o[i] = o[j], o[j] = x);
+  return o;
+  
+}
+//перемешать карты
+shuffle(cards);
+
+
+for (var i = 0; i < cards.length; i++) {
+  card = document.createElement('div');
+  card.dataset.item = cards[i];
+  card.dataset.view = "card";
+  myCards.appendChild(card);
+ 
+
+//проверяем на совпадение
+ card.onclick = function () { 
+    if (this.className != 'flipped' && this.className != 'correct'){
+        this.className = 'flipped';
+        var result = this.dataset.item;
+        resultsArray.push(result);
+	
+        
+    }
+
+
+    if (resultsArray.length > 1) {
+      if (resultsArray[0] === resultsArray[1]) {
+        check("correct");
+        counter ++;
+        win();
+        resultsArray = [];
+      } else {
+        check("reverse");
+        resultsArray = [];
+      }
+
+    }
+
+ }
+ 
+};
+
+
+
+
+var check = function(className) {
+  var x = document.getElementsByClassName("flipped");
+
+  setTimeout(function() {
+
+    for(var i = (x.length - 1); i >= 0; i--) {
+      x[i].className = className;
+    }
+
+  },500);
+
+}
+//запуск счетчика
+buttonPause.onclick = function() {
+ 	clearInterval(Interval);
+    Interval = setInterval(startTimer, 10)};
+	
+
+
+
+
+
+function change_color(obj)
+{
+    obj.value && (document.body.style.backgroundColor = obj.value);
+}
+
+
+
+//счетчик
+function startTimer () {
+  tens++;
+
+  if(tens < 9){
+    appendTens.innerHTML = "0" + tens;
+  }
+
+  if (tens > 9){
+    appendTens.innerHTML = tens;
+
+  }
+
+  if (tens > 60) {
+    seconds++;
+    appendSeconds.innerHTML = "0" + seconds;
+    tens = 0;
+    appendTens.innerHTML = "0" + 0;
+  }
+
+  if (seconds > 9){
+    appendSeconds.innerHTML = seconds;
+  }
+  
+  if (seconds > 60){
+     min++;
+    appendmin.innerHTML = "0" + min;
+    seconds = 0;
+    appendseconds.innerHTML = "0" + 0;
+  }
+
+}
+//8 из 8
+var win = function () {
+
+  if(counter === 8) {
+    clearInterval(Interval);
+	var M = document.getElementById('min').textContent;
+	var S = document.getElementById('seconds').textContent;
+	var T = document.getElementById('tens').textContent;
+	alert("Вы выиграли!\n"+"Затраченное время:"+ M + ":" + S + "." + T);
+   
+  }
+
+}
+
+
+
+  </script>
+</body>
+</html>
